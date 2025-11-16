@@ -46,19 +46,23 @@ function Calculator() {
         setDisplay("")
     }
     const equalCallback = (button_text) => () => {
-        setDisplay(actions[action](a, Number(display)))
-        let data = {
-        a: a,
-        action: action,
-        b: Number(display)}
-        fetch(url,{
-            method: 'POST',
-            body: {a: a,
-                b: Number(display),
-                operation: action},
-        }).then(response => {
-            console.log(response)
-        })}
+        if (action != null) {
+            setDisplay(actions[action](a, Number(display)))
+            let data = {
+                a: a,
+                action: action,
+                b: Number(display)}
+            fetch(url,{
+                method: 'POST',
+                body: {a: a,
+                    b: Number(display),
+                    operation: action},
+            }).then(response => {
+                console.log(response)
+            })
+        setAction(null)}
+        }
+
 
     return (
         <div>
