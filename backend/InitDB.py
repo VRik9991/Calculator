@@ -15,6 +15,5 @@ async def init_db():
         database=client["CalculatorDB"],
         document_models=[
             ProblemModel,
-
         ]
     )
