@@ -7,7 +7,7 @@ from backend.ProblemModel import ProblemModel
 MONGO_PASS = os.getenv("MONGO_INITDB_ROOT_PASSWORD")
 MONGO_LOGIN = os.getenv("MONGO_INITDB_ROOT_USERNAME")
 MONGO_PORT = os.getenv("MONGO_PORT")
-MONGO_URI = f"mongodb://{MONGO_LOGIN}:{MONGO_PASS}@localhost:{MONGO_PORT}"
+MONGO_URI = f"mongodb://localhost:27017"
 
 async def init_db():
     client = AsyncIOMotorClient(MONGO_URI)

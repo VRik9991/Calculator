@@ -19,6 +19,7 @@ async def root():
 
 @app.post("/problemsave")
 async def problemsave(a: str, operation: str, b: str):
+    print(a, b, operation)
     our_answer = eval(str(a) + operation + str(b))
     problem = ProblemModel(
         numerone=a,

@@ -31,7 +31,7 @@ const actions = {
     "*": (a, b) => a * b,
     ":": (a, b) => a / b
 }
-let url = "http://localhost:8000/"
+let url = "http://localhost:8000"
 
 function Calculator() {
     const [a, setA] = useState(null);
@@ -45,21 +45,26 @@ function Calculator() {
         setAction(button_text)
         setDisplay("")
     }
+    const CE = (button_text) => () => {
+        setDisplay("")
+    }
     const equalCallback = (button_text) => () => {
         if (action != null) {
             setDisplay(actions[action](a, Number(display)))
-            let data = {
-                a: a,
-                action: action,
-                b: Number(display)}
-            fetch(url,{
-                method: 'POST',
-                body: {a: a,
-                    b: Number(display),
-                    operation: action},
-            }).then(response => {
-                console.log(response)
+            fetch(url + `/problemsave?a=${a}&b=${Number(display)}&operation=${encodeURIComponent(action)}`,{
+                method: 'POST'
             })
+                .then(response => {
+                console.log(response)
+                    return response.json()
+            })
+                .then(data => {
+                    console.log('Success:', data);
+                })
+                .catch(error => {
+                    console.error('Fetch error:', error);
+                    // Можно добавить уведомление пользователю
+                });
         setAction(null)}
         }
 
@@ -70,7 +75,8 @@ function Calculator() {
             <KeyBoard
                 buttonCallback={buttonCallback}
                 actionCallBack={actionCallBack}
-                equalCallback={equalCallback}/>
+                equalCallback={equalCallback}
+                CE={CE}/>
         </div>
     )
 

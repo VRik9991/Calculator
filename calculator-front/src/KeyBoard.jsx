@@ -10,13 +10,14 @@ const column_style = {
     flexDirection: "column",
 }
 
-function KeyBoard({buttonCallback, actionCallBack, equalCallback}) {
+function KeyBoard({buttonCallback, actionCallBack, equalCallback, CE}) {
     const rows = [
         [1, 2, 3],
         [4, 5, 6],
         [7, 8, 9],
         ["+", 0, "-"],
-        ["*", ":", "="]]
+        ["*", ":", "="],
+        ["CE"],]
 
     return (
         <div style={column_style}>
@@ -29,6 +30,8 @@ function KeyBoard({buttonCallback, actionCallBack, equalCallback}) {
                                 chosen_callback = buttonCallback
                             } else if (item_text === "=") {
                                 chosen_callback = equalCallback;
+                            } else if (item_text === "CE"){
+                                chosen_callback = CE
                             } else chosen_callback = actionCallBack;
                             return (<Button text={item_text} callback={chosen_callback(item_text)} key={index} />)
                         })
