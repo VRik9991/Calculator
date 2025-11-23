@@ -36,41 +36,46 @@ let url = "http://localhost:8000"
 function Calculator() {
     const [a, setA] = useState(null);
     const [action, setAction] = useState(null);
-    const [display, setDisplay] = useState('');
+    const [display, setDisplay] = useState("");
+    const [minidisp, setMinidisp] = useState("");
     const buttonCallback = (button_text) => () => {
         setDisplay(display + button_text)
     }
     const actionCallBack = (button_text) => () => {
         setA(Number(display))
+        setMinidisp(`${Number(display)} ${button_text}`)
         setAction(button_text)
         setDisplay("")
     }
     const CE = (button_text) => () => {
         setDisplay("")
+        setMinidisp("")
+        setA(null)
+        setAction(null)
     }
     const equalCallback = (button_text) => () => {
         if (action != null) {
-            setDisplay(actions[action](a, Number(display)))
-            fetch(url + `/problemsave?a=${a}&b=${Number(display)}&operation=${encodeURIComponent(action)}`,{
+            fetch(url + `/problemsave?a=${a}&b=${Number(display)}&operation=${encodeURIComponent(action)}`, {
                 method: 'POST'
             })
                 .then(response => {
-                console.log(response)
                     return response.json()
-            })
-                .then(data => {
-                    console.log('Success:', data);
+                }).then(data => {
+                    console.log(data)
+                    setA(Number(data['text']))
+                    setMinidisp(minidisp + " " + display)
+                    setDisplay(data['text'])
                 })
-                .catch(error => {
-                    console.error('Fetch error:', error);
-                    // Можно добавить уведомление пользователю
-                });
-        setAction(null)}
+
+            setAction(null)
         }
+        setDisplay(``)
+    }
 
 
     return (
         <div>
+            <div style={displayStyle}>{minidisp}</div>
             <div style={displayStyle}>{display}</div>
             <KeyBoard
                 buttonCallback={buttonCallback}

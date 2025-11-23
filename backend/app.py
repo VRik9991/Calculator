@@ -2,7 +2,7 @@ from fastapi import FastAPI
 import asyncio
 from backend.ProblemModel import ProblemModel
 from backend.InitDB import init_db
-
+from fastapi.middleware.cors import CORSMiddleware
 
 async def lifespan(app: FastAPI):
     await init_db()
@@ -10,7 +10,13 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title="Calculator", version="1.0", lifespan=lifespan)
-
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],       # Разрешить всем доменам
+    allow_credentials=True,
+    allow_methods=["*"],       # Разрешить все методы (GET, POST, OPTIONS...)
+    allow_headers=["*"],       # Разрешить все заголовки
+)
 
 @app.get("/")
 async def root():
